@@ -2,13 +2,12 @@ var d = {
     pos:0,
     data:[],
     open:false,
-    skipCallback:null,
-    waitForAction: false,
-    options: {},
+    skippable: false,
     boot:function(){
         var s='<style>';
             s+='.demo{position:fixed;top:0px;left:0px;width:100%;height:100%;background-color:rgba(0,0,0,0.8);z-index:99;display:none}';
             s+='.demo-highlighted{position:relative;z-index:100;pointer-events:none;clear:both;}';   
+            s+='.demo-clickable{pointer-events:all;}';   
             s+='.demo .demo-tooltip{position:fixed;padding:15px;background-color:white;z-index:101;border-radius:5px;max-width:500px;}';   
             s+='.demo .demo-tooltip .title{font-weight:bold;}';   
             s+='.demo .demo-tooltip .title:empty{display:none;}';   
@@ -27,10 +26,7 @@ var d = {
             b += '</div>';
             b+='<div class="background"></div>';
         b+='</div>';
-
         options.attachTo!==undefined ? $(options.attachTo).append(b) : $('body').append(b);
-
-        
         $(".demo .demo-tooltip button:nth-of-type(1)").click(function(){
             d.close();
         });
@@ -46,8 +42,7 @@ var d = {
         d.pos = 0;        
         d.open = true;
         $(".demo .demo-tooltip button:nth-of-type(2)").text('Next');
-        options.waitForInput!==undefined ? options.waitForInput ? $('.demo .demo-tooltip button,.demo .demo-tooltip hr').show() : $('.demo .demo-tooltip button,.demo .demo-tooltip hr').hide() : $('.demo .demo-tooltip button,.demo .demo-tooltip hr').show();
-        options.skippable!==undefined ? options.skippable ? $('.demo .demo-tooltip button:nth-of-type(1)').show() : $('.demo .demo-tooltip button:nth-of-type(1)').hide() : $('.demo .demo-tooltip button:nth-of-type(1)').show();
+        d.skippable = options.skippable!==undefined ? true : options.skippable;
         $('.demo').fadeIn('fast');
         d.next();
     },
@@ -55,7 +50,8 @@ var d = {
         if(!d.open){
             return;
         }
-        $('*').removeClass('demo-highlighted');
+        $('*').removeClass('demo-highlighted').removeClass('demo-clickable');
+        $('.demo .demo-tooltip button,.demo .demo-tooltip hr').show();
         if(d.data[d.pos]===undefined){
             d.close();
             return;
@@ -66,14 +62,31 @@ var d = {
         if(b.element===undefined){
             $('.demo .demo-tooltip').css({left: $(window).width() / 2 - $('.demo .demo-tooltip').innerWidth() / 2,top:$(window).height() / 2 - $('.demo .demo-tooltip').height(),right:'initial'});
         }else{
-            b.element.addClass('demo-highlighted');
-            var y = b.element.offset().top + b.element.height() + 40;                
+            b.element.addClass('demo-highlighted');            
+            if(b.element.offset().top>$(window).height() / 2 / 2){
+                var y = b.element.offset().top - $('.demo .demo-tooltip').height() - 40;
+                $('.demo .demo-tooltip').css({top:y});
+            }else{
+                var y = b.element.offset().top + b.element.height() + 40;
+                $('.demo .demo-tooltip').css({top:y,bottom:'initial'});
+            }
             if(b.element.offset().left>$(window).width() / 2){            
                 var x = ($(window).width() - (b.element.offset().left + b.element.outerWidth()));
-                $('.demo .demo-tooltip').css({right: x,top:y,left:'initial'});
+                $('.demo .demo-tooltip').css({right: x,left:'initial'});
             }else{
                 var x = b.element.offset().left;
-                $('.demo .demo-tooltip').css({left: x,top:y,right:'initial'});
+                $('.demo .demo-tooltip').css({left: x,right:'initial'});
+            }
+        }
+        if(d.skippable){
+            $(".demo .demo-tooltip button:nth-of-type(1)").hide();
+        }else{
+            $(".demo .demo-tooltip button:nth-of-type(1)").show();
+        }
+        if(b.waitForInput!==undefined){
+            if(b.waitForInput){
+                $('.demo .demo-tooltip button,.demo .demo-tooltip hr').hide();
+                b.element.addClass('demo-clickable');
             }
         }
         d.pos++;

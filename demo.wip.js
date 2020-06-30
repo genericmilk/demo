@@ -3,12 +3,12 @@ var d = {
     data:[],
     open:false,
     skipCallback:null,
-    skippable:true,
     waitForAction: false,
+    options: {},
     boot:function(){
         var s='<style>';
             s+='.demo{position:fixed;top:0px;left:0px;width:100%;height:100%;background-color:rgba(0,0,0,0.8);z-index:99;display:none}';
-            s+='.demo-highlighted{position:relative;z-index:100;pointer-events:none;}';   
+            s+='.demo-highlighted{position:relative;z-index:100;pointer-events:none;clear:both;}';   
             s+='.demo .demo-tooltip{position:fixed;padding:15px;background-color:white;z-index:101;border-radius:5px;max-width:500px;}';   
             s+='.demo .demo-tooltip .title{font-weight:bold;}';   
             s+='.demo .demo-tooltip .title:empty{display:none;}';   
@@ -16,6 +16,8 @@ var d = {
             s+='.demo .demo-tooltip button:nth-of-type(2){float:right;background:none;border:0;background-color:#0468fe;color:white;border-radius: 5px;padding: 5px 15px;}';                 
         s+='</style>';
         $('head').append(s);
+    },
+    build:function(data,options){
         var b = '<div class="demo">';
             b +='<div class="demo-tooltip">';
                 b += '<div class="title"></div>';
@@ -25,8 +27,10 @@ var d = {
             b += '</div>';
             b+='<div class="background"></div>';
         b+='</div>';
-        $('body').append(b);
-        // Attach listeners
+
+        options.attachTo!==undefined ? $(options.attachTo).append(b) : $('body').append(b);
+
+        
         $(".demo .demo-tooltip button:nth-of-type(1)").click(function(){
             d.close();
         });
@@ -38,13 +42,12 @@ var d = {
             }
             d.next();
         });
-    },
-    build:function(data){
         d.data = data;
         d.pos = 0;        
         d.open = true;
         $(".demo .demo-tooltip button:nth-of-type(2)").text('Next');
-        d.skippable ? $('.demo .demo-tooltip button:nth-of-type(1)').show() : $('.demo .demo-tooltip button:nth-of-type(1)').hide();
+        options.waitForInput!==undefined ? options.waitForInput ? $('.demo .demo-tooltip button,.demo .demo-tooltip hr').show() : $('.demo .demo-tooltip button,.demo .demo-tooltip hr').hide() : $('.demo .demo-tooltip button,.demo .demo-tooltip hr').show();
+        options.skippable!==undefined ? options.skippable ? $('.demo .demo-tooltip button:nth-of-type(1)').show() : $('.demo .demo-tooltip button:nth-of-type(1)').hide() : $('.demo .demo-tooltip button:nth-of-type(1)').show();
         $('.demo').fadeIn('fast');
         d.next();
     },
@@ -57,7 +60,7 @@ var d = {
             d.close();
             return;
         }
-        var b = d.data[d.pos];
+        var b = d.data[d.pos];        
         $('.demo .demo-tooltip .title').html(b.title); 
         $('.demo .demo-tooltip .inner').html(b.text);        
         if(b.element===undefined){
@@ -76,15 +79,14 @@ var d = {
         d.pos++;
         if(d.data[d.pos]===undefined && d.data[d.pos-1].clickOnNext===undefined){
             $(".demo .demo-tooltip button:nth-of-type(1)").hide();
-            $(".demo .demo-tooltip button:nth-of-type(2)").text('Finish');
-            
+            $(".demo .demo-tooltip button:nth-of-type(2)").text('Finish');            
         }
     },
     close:function(){
         d.open = false;
         d.data = [];
         d.pos = 0;
-        $('.demo').fadeOut('fast');
+        $('.demo').remove();
     }
 };
 d.boot();

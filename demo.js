@@ -89,6 +89,21 @@ var d = {
                 b.element.addClass('demo-clickable');
             }
         }
+        if(b.allowElementClick!==undefined){
+            if(b.allowElementClick){
+                b.element.addClass('demo-clickable');
+                b.element.click(function(){
+                    if(d.open){
+                        d.next();
+                    }
+                });
+            }
+        }        
+        if(b.nextText!==undefined){
+            $(".demo .demo-tooltip button:nth-of-type(2)").text(b.nextText);        
+        }else{
+            $(".demo .demo-tooltip button:nth-of-type(2)").text('Next');        
+        }
         d.pos++;
         if(d.data[d.pos]===undefined && d.data[d.pos-1].clickOnNext===undefined){
             $(".demo .demo-tooltip button:nth-of-type(1)").hide();

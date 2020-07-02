@@ -1,5 +1,5 @@
 # 🎩 Demo
-A lightweight jQuery walkthrough engine! Currently work in progress!
+## A lightweight jQuery walkthrough engine!
 
 Demo is a really easy to use framework that allows you to build super easy onboarding for users simply by passing in an array.
 
@@ -35,7 +35,7 @@ This entire walkthrough is bound by the optional `options` array which is passed
 
 And that really is it! Simply chain up as many `walkthrough` options as you like and provide the `options` governing them. Refer to the tables below on how to customise and manipulate the tour!
 
-## Walkthrough array keypairs
+### Walkthrough array keypairs
 | Key               | Default | Expects         | Description                                                                                               |
 |-------------------|---------|-----------------|-----------------------------------------------------------------------------------------------------------|
 | title             | null    | String          | Specifies a modal title for this step                                                                     |
@@ -46,13 +46,13 @@ And that really is it! Simply chain up as many `walkthrough` options as you like
 | waitForInput      | false   | Boolean         | If true, hides the next controls and sets allowElementClick to true. Will only advance on a d.next() call |
 | nextText          | Next    | String          | Changes the text the "Next" button displays in this step                                                  |
 
-## Options array keypairs
+### Options array keypairs
 | Key       | Default   | Expects         | Description                                                                                                 |
 |-----------|-----------|-----------------|-------------------------------------------------------------------------------------------------------------|
 | skippable | true      | Boolean         | Specifies if the tour can be skipped and exited early                                                       |
 | attachTo  | $('body') | jQuery Selector | Where the elements of the walkthrough should be appended to. In some instances this may need to be altered. |
 
-## Functions API
+### Functions API
 | Function               | Description                                                 |
 |------------------------|-------------------------------------------------------------|
 | d.boot();              | Calls on page load. Loads the styles and sets the defaults. |
@@ -60,5 +60,5 @@ And that really is it! Simply chain up as many `walkthrough` options as you like
 | d.next();              | Advances one step in the tour                               |
 | d.close();             | Exits any opened tour                                       |
 
-## Roadmap
+### Roadmap
 I'd like to add more options such as previous steps, no jquery version and more! Please as always star if you like it and leave feedback! Thanks lovelies!

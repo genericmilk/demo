@@ -45,6 +45,9 @@ And that really is it! Simply chain up as many `walkthrough` options as you like
 | allowElementClick | false   | Boolean         | Elects if the element can be interacted with whilst the modal is open                                     |
 | waitForInput      | false   | Boolean         | If true, hides the next controls and sets allowElementClick to true. Will only advance on a d.next() call |
 | nextText          | Next    | String          | Changes the text the "Next" button displays in this step                                                  |
+| x                 | Null    | Integer         | Specifies a hard coded position for the tooltip in pixels (x)                                             |
+| y                 | Null    | Integer         | Specifies a hard coded position for the tooltip in pixels (y)                                             |
+
 
 ### Options array keypairs
 | Key       | Default   | Expects         | Description                                                                                                 |

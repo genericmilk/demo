@@ -8,7 +8,7 @@ var d = {
             s+='.demo{position:fixed;top:0px;left:0px;width:100%;height:100%;background-color:rgba(0,0,0,0.8);z-index:99;display:none}';
             s+='.demo-highlighted{position:relative;z-index:100;pointer-events:none;clear:both;}';   
             s+='.demo-clickable{pointer-events:all;}';   
-            s+='.demo .demo-tooltip{position:fixed;padding:15px;background-color:white;z-index:101;border-radius:5px;max-width:500px;}';   
+            s+='.demo .demo-tooltip{position:absolute;padding:15px;background-color:white;z-index:101;border-radius:5px;max-width:500px;}';   
             s+='.demo .demo-tooltip .title{font-weight:bold;}';   
             s+='.demo .demo-tooltip .title:empty{display:none;}';   
             s+='.demo .demo-tooltip button:nth-of-type(1){float:left;background:none;border:0;color:#0468fe;border-radius: 5px;padding: 5px 15px;}';  
@@ -78,6 +78,13 @@ var d = {
                 $('.demo .demo-tooltip').css({left: x,right:'initial'});
             }
         }
+        if(b.x!==undefined){
+            $('.demo .demo-tooltip').css({left: b.x,right:'initial'});
+        }
+        if(b.y!==undefined){
+            $('.demo .demo-tooltip').css({top: b.y,bottom:'initial'});
+        }
+        
         if(d.skippable){
             $(".demo .demo-tooltip button:nth-of-type(1)").hide();
         }else{
@@ -114,6 +121,7 @@ var d = {
         d.open = false;
         d.data = [];
         d.pos = 0;
+        $('*').removeClass('demo-highlighted').removeClass('demo-clickable');
         $('.demo').remove();
     }
 };
